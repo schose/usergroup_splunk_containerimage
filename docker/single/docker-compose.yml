@@ -1,0 +1,20 @@
+services:
+  single:
+    image: docker.io/splunk/splunk:9.3.4
+    ports:
+      - "8101:8000"
+      - "8102:8089"
+    volumes:
+      - myvol_etc:/opt/splunk/etc
+      - myvol_var:/opt/splunk/var
+    hostname: single
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_PASSWORD=Password01
+      - SPLUNK_ROLE=splunk_standalone
+      - JAVA_VERSION=openjdk:11
+      - JAVA_DOWNLOAD_URL=https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_linux-x64_bin.tar.gz
+      - SPLUNK_APPS_URL=https://github.com/schose/fixedissues/releases/download/v0.9.1/fixedissues_v091.tgz
+volumes:
+  myvol_etc:
+  myvol_var:

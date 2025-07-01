@@ -1,0 +1,135 @@
+version: '3'
+services:
+
+  deployer:
+    image: splunk/splunk:9.2.5
+    ports:
+      - "8022:8000"
+      - "8122:8089"
+    volumes:
+      - deployer_etc:/opt/splunk/etc
+      - deployer_var:/opt/splunk/var
+    hostname: deployer
+    environment:
+     # - SPLUNK_HOME=/opt/splunk/
+     # - DEFAULTS_URL=http://splunk-defaults/default.yml
+      - SPLUNK_START_ARGS="--accept-license"
+      - SPLUNK_PASSWORD=Password01
+      - SPLUNK_ROLE=splunk_deployer
+      - SPLUNK_CLUSTER_MASTER_URL=clm
+      - SPLUNK_INDEXER_URL=idx1,idx2,idx3      
+      - SPLUNK_SEARCH_HEAD_URL=search-0,search-1
+      - SPLUNK_DEPLOYER_URL=deployer
+      - SPLUNK_SEARCH_HEAD_CAPTAIN_URL=captain
+      - SPLUNK_SHC_SECRET=mypass4splunk
+      - SPLUNK_IDXC_SECRET=mypass4splunk
+      - SPLUNK_LAUNCH_CONF=OPTIMISTIC_ABOUT_FILE_LOCKING=1
+      - DEBUG=true
+      - ANSIBLE_INSECURE_TMP_FILE_WARNING=false
+    networks:
+      - splunk
+
+  captain:
+    image: splunk/splunk:9.2.5
+    ports:
+      - "8023:8000"
+      - "8123:8089"
+    volumes:
+      - captain_etc:/opt/splunk/etc
+      - captain_var:/opt/splunk/var
+    hostname: captain
+    environment:
+     # - SPLUNK_HOME=/opt/splunk/
+     # - DEFAULTS_URL=http://splunk-defaults/default.yml
+      - SPLUNK_START_ARGS="--accept-license"
+      - SPLUNK_PASSWORD=Password01
+      - SPLUNK_ROLE=splunk_search_head_captain
+      - SPLUNK_CLUSTER_MASTER_URL=clm
+      - SPLUNK_INDEXER_URL=idx1,idx2,idx3
+      - SPLUNK_SEARCH_HEAD_URL=search-0,search-1
+      - SPLUNK_DEPLOYER_URL=deployer
+      - SPLUNK_SEARCH_HEAD_CAPTAIN_URL=captain
+      - SPLUNK_SHC_SECRET=mypass4splunk
+      - SPLUNK_IDXC_SECRET=mypass4splunk
+      - SPLUNK_LAUNCH_CONF=OPTIMISTIC_ABOUT_FILE_LOCKING=1
+      - DEBUG=true
+      - ANSIBLE_INSECURE_TMP_FILE_WARNING=false
+    networks:
+      - splunk
+    depends_on: 
+      - deployer
+
+  search-0:
+    image: splunk/splunk:9.2.5
+    ports:
+      - "8024:8000"
+      - "8124:8089"
+    volumes:
+      - search0_etc:/opt/splunk/etc
+      - search0_var:/opt/splunk/var
+    hostname: search-0
+    environment:
+     # - SPLUNK_HOME=/opt/splunk/
+     # - DEFAULTS_URL=http://splunk-defaults/default.yml
+      - SPLUNK_START_ARGS="--accept-license"
+      - SPLUNK_PASSWORD=Password01
+      - SPLUNK_ROLE=splunk_search_head
+      - SPLUNK_CLUSTER_MASTER_URL=clm
+      - SPLUNK_INDEXER_URL=idx1,idx2,idx3
+      - SPLUNK_SEARCH_HEAD_URL=search-0,search-1
+      - SPLUNK_DEPLOYER_URL=deployer
+      - SPLUNK_SEARCH_HEAD_CAPTAIN_URL=captain
+      - SPLUNK_SHC_SECRET=mypass4splunk
+      - SPLUNK_IDXC_SECRET=mypass4splunk
+      - SPLUNK_LAUNCH_CONF=OPTIMISTIC_ABOUT_FILE_LOCKING=1
+      - DEBUG=true
+      - ANSIBLE_INSECURE_TMP_FILE_WARNING=false
+    networks:
+      - splunk
+    depends_on: 
+      - deployer
+
+  search-1:
+    image: splunk/splunk:9.2.5
+    ports:
+      - "8025:8000"
+      - "8125:8089"
+    volumes:
+      - search1_etc:/opt/splunk/etc
+      - search1_var:/opt/splunk/var
+    hostname: search-1
+    environment:
+    # - SPLUNK_HOME=/opt/splunk/
+     # - DEFAULTS_URL=http://splunk-defaults/default.yml
+      - SPLUNK_START_ARGS="--accept-license"
+      - SPLUNK_PASSWORD=Password01
+      - SPLUNK_ROLE=splunk_search_head
+      - SPLUNK_CLUSTER_MASTER_URL=clm
+      - SPLUNK_INDEXER_URL=idx1,idx2,idx3
+      - SPLUNK_SEARCH_HEAD_URL=search-0,search-1
+      - SPLUNK_DEPLOYER_URL=deployer
+      - SPLUNK_SEARCH_HEAD_CAPTAIN_URL=captain
+      - SPLUNK_SHC_SECRET=mypass4splunk
+      - SPLUNK_IDXC_SECRET=mypass4splunk
+      - SPLUNK_LAUNCH_CONF=OPTIMISTIC_ABOUT_FILE_LOCKING=1
+      - DEBUG=true
+      - ANSIBLE_INSECURE_TMP_FILE_WARNING=false
+    networks:
+      - splunk
+    depends_on: 
+      - deployer
+
+volumes:
+  deployer_etc:
+  deployer_var:
+  captain_etc:
+  captain_var:
+  search0_etc:
+  search0_var:
+  search1_etc:
+  search1_var:
+
+
+networks:
+  splunk:
+    external: true

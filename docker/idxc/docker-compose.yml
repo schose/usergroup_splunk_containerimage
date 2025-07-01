@@ -1,0 +1,94 @@
+services:
+# clm
+  clm:
+    image: docker.io/splunk/splunk:9.2.5
+    ports:
+      - "8001:8000"
+      - "8002:8089"
+    volumes:
+      - clm-01-etc:/opt/splunk/etc
+      - clm-01-var:/opt/splunk/var
+    hostname: clm
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+        #- SPLUNK_LICENSE_URI=http://localhost/splunk.lic
+      - SPLUNK_PASSWORD=Password01
+      - SPLUNK_ROLE=splunk_cluster_master
+      - SPLUNK_INDEXER_URL=idx1,idx2,idx3
+      - SPLUNK_IDXC_SECRET=mypass4splunk
+
+  idx1:
+    image: docker.io/splunk/splunk:9.2.5
+    ports:
+      - "8011:8000"
+      - "8021:8089"
+    volumes:
+      - idx-01-etc:/opt/splunk/etc
+      - idx-01-var:/opt/splunk/var
+      - idx-01-colddb:/colddb
+    hostname: idx1
+    environment:
+#      - SPLUNK_HOME=/opt/splunk/
+     # - DEFAULTS_URL=http://splunk-defaults/default.yml
+      - SPLUNK_START_ARGS="--accept-license"
+      - SPLUNK_PASSWORD=Password01
+      - SPLUNK_ROLE=splunk_indexer
+      - SPLUNK_CLUSTER_MASTER_URL=clm
+      - SPLUNK_IDXC_SECRET=mypass4splunk
+    depends_on:
+      - clm
+
+  idx2:
+    image: docker.io/splunk/splunk:9.2.5
+    ports:
+      - "8012:8000"
+      - "8022:8089"
+    volumes:
+      - idx-02-etc:/opt/splunk/etc
+      - idx-02-var:/opt/splunk/var
+      - idx-02-colddb:/colddb
+    hostname: idx2
+    environment:
+     # - SPLUNK_HOME=/opt/splunk/
+     # - DEFAULTS_URL=http://splunk-defaults/default.yml
+      - SPLUNK_START_ARGS="--accept-license"
+      - SPLUNK_PASSWORD=Password01
+      - SPLUNK_ROLE=splunk_indexer
+      - SPLUNK_CLUSTER_MASTER_URL=clm
+      - SPLUNK_IDXC_SECRET=mypass4splunk
+    depends_on:
+      - clm
+
+  idx3:
+    image: docker.io/splunk/splunk:9.2.5
+    ports:
+      - "8013:8000"
+      - "8033:8089"
+    volumes:
+      - idx-03-etc:/opt/splunk/etc
+      - idx-03-var:/opt/splunk/var
+      - idx-03-colddb:/colddb
+    hostname: idx3
+    environment:
+     # - SPLUNK_HOME=/opt/splunk/
+     # - DEFAULTS_URL=http://splunk-defaults/default.yml
+      - SPLUNK_START_ARGS="--accept-license"
+      - SPLUNK_PASSWORD=Password01
+      - SPLUNK_ROLE=splunk_indexer
+      - SPLUNK_CLUSTER_MASTER_URL=clm
+      - SPLUNK_IDXC_SECRET=mypass4splunk
+    depends_on:
+      - clm
+
+volumes:
+  clm-01-etc:
+  clm-01-var:
+  idx-01-etc:
+  idx-01-var:
+  idx-01-colddb:
+  idx-02-etc:
+  idx-02-var:
+  idx-02-colddb:
+  idx-03-etc:
+  idx-03-var:
+  idx-03-colddb:
