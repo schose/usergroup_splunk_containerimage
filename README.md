@@ -1,5 +1,19 @@
 # usergroup_splunk_containerimage
 
+## marp
+
+- start marp webserver
+```bash
+docker run --rm --init -v $PWD/marp:/home/marp/app -e LANG=$LANG -p 8080:8080 -p 37717:37717 marpteam/marp-cli --allow-local-files --html -s .
+```
+
+- convert to PDF
+
+```bash
+docker run --rm --init -v $PWD/marp:/home/marp/app/ -e LANG=$LANG marpteam/marp-cli slides.md --allow-local-files --html  --pdf
+```
+
+
 ## start AWS demo instance
 
 ```bash
