@@ -1,7 +1,7 @@
 services:
 # clm
   clm:
-    image: docker.io/splunk/splunk:9.2.5
+    image: docker.io/splunk/splunk:9.3.4
     ports:
       - "8001:8000"
       - "8002:8089"
@@ -18,7 +18,7 @@ services:
       - SPLUNK_IDXC_SECRET=mypass4splunk
 
   idx1:
-    image: docker.io/splunk/splunk:9.2.5
+    image: docker.io/splunk/splunk:9.3.4
     ports:
       - "8011:8000"
       - "8021:8089"
@@ -39,7 +39,7 @@ services:
       - clm
 
   idx2:
-    image: docker.io/splunk/splunk:9.2.5
+    image: docker.io/splunk/splunk:9.3.4
     ports:
       - "8012:8000"
       - "8022:8089"
@@ -60,7 +60,7 @@ services:
       - clm
 
   idx3:
-    image: docker.io/splunk/splunk:9.2.5
+    image: docker.io/splunk/splunk:9.3.4
     ports:
       - "8013:8000"
       - "8033:8089"

@@ -1,0 +1,41 @@
+#cloud-config
+#aws
+disable_ec2_metadata: true
+
+hostname: demohost
+
+packages:
+ - wget
+ #- bind-utils
+ - git
+ - rsync
+# - docker.x86_64
+# - python3-pip.noarch
+ - docker
+ - python3-pip
+ - python3-docker
+repo_update: true
+repo_upgrade: all
+
+
+# # groups
+groups:
+  - role-adm-splunk-admins
+
+# users
+users:
+  - default
+
+runcmd:
+    - hostname
+    - usermod -a -G docker ec2-user
+    - sudo -u ec2-user python3 -m pip install docker-compose
+    - systemctl enable docker
+    - systemctl start docker
+
+
+# ## reboot
+# power_state:
+#   delay: 1
+#   mode: reboot
+#   message: Reboot triggered. I'll be back

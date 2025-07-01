@@ -1,0 +1,30 @@
+DryRun: false
+ImageId: 'ami-08aa372c213609089' # aws linux
+KeyName: 'ec2-ffm-2016'
+SecurityGroupIds:
+#- 'sg-0975e7c20b6c3ef83'
+- 'sg-3737725a'
+InstanceType: 'm5.2xlarge' # 4vcp 16gb
+#InstanceType: 'm5.xlarge' # 4vcp 16gb
+#InstanceType: 'm5.large' # 2vpu 8gb
+#InstanceType: 't3.large' # 2vpu 8gb
+#PrivateDnsName: "cloudidx1.bwlab.loc"
+NetworkInterfaces: # The network interfaces to associate with the instance.
+- AssociatePublicIpAddress: true  # Indicates whether to assign a public IPv4 address to an instance you launch in a VPC.
+  DeleteOnTermination: true # If set to true, the interface is deleted when the instance is terminated.
+  DeviceIndex: 0 # The position of the network interface in the attachment order.
+BlockDeviceMappings:  # The block device mapping entries.
+#- DeviceName: '/dev/sda1'  # The device name (for example, /dev/sdh or xvdh).
+#- DeviceName: '/dev/nvme0n1'  # The device name (for example, /dev/sdh or xvdh).
+- DeviceName: '/dev/xvda'  # The device name (for example, /dev/sdh or xvdh).
+#  VirtualName: '' # The virtual device name (ephemeralN).
+  Ebs: # Parameters used to automatically set up Amazon EBS volumes when the instance is launched.
+    DeleteOnTermination: true  # Indicates whether the EBS volume is deleted on instance termination.
+    VolumeSize: 40 # The size of the volume, in GiB.
+TagSpecifications:
+- ResourceType: instance  # The type of resource to tag. Valid values are: client-vpn-endpoint, customer-gateway, dedicated-host, dhcp-options, elastic-ip, fleet, fpga-image, host-reservation, image, instance, internet-gateway, launch-template, natgateway, network-acl, network-interface, reserved-instances, route-table, security-group, snapshot, spot-instances-request, subnet, traffic-mirror-filter, traffic-mirror-session, traffic-mirror-target, transit-gateway, transit-gateway-attachment, transit-gateway-route-table, volume, vpc, vpc-peering-connection, vpn-connection, vpn-gateway.
+  Tags: # The tags to apply to the resource.
+  - Key: 'Name'  # The key of the tag.
+    Value: 'testinstance' # The value of the tag.
+Monitoring: 
+  Enabled: true
