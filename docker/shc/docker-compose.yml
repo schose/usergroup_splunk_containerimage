@@ -1,6 +1,4 @@
-version: '3'
 services:
-
   deployer:
     image: splunk/splunk:9.3.4
     ports:
@@ -11,8 +9,6 @@ services:
       - deployer_var:/opt/splunk/var
     hostname: deployer
     environment:
-     # - SPLUNK_HOME=/opt/splunk/
-     # - DEFAULTS_URL=http://splunk-defaults/default.yml
       - SPLUNK_START_ARGS="--accept-license"
       - SPLUNK_PASSWORD=Password01
       - SPLUNK_ROLE=splunk_deployer
@@ -24,10 +20,7 @@ services:
       - SPLUNK_SHC_SECRET=mypass4splunk
       - SPLUNK_IDXC_SECRET=mypass4splunk
       - SPLUNK_LAUNCH_CONF=OPTIMISTIC_ABOUT_FILE_LOCKING=1
-      - DEBUG=true
       - ANSIBLE_INSECURE_TMP_FILE_WARNING=false
-    networks:
-      - splunk
 
   captain:
     image: splunk/splunk:9.3.4
@@ -39,8 +32,6 @@ services:
       - captain_var:/opt/splunk/var
     hostname: captain
     environment:
-     # - SPLUNK_HOME=/opt/splunk/
-     # - DEFAULTS_URL=http://splunk-defaults/default.yml
       - SPLUNK_START_ARGS="--accept-license"
       - SPLUNK_PASSWORD=Password01
       - SPLUNK_ROLE=splunk_search_head_captain
@@ -52,10 +43,7 @@ services:
       - SPLUNK_SHC_SECRET=mypass4splunk
       - SPLUNK_IDXC_SECRET=mypass4splunk
       - SPLUNK_LAUNCH_CONF=OPTIMISTIC_ABOUT_FILE_LOCKING=1
-      - DEBUG=true
       - ANSIBLE_INSECURE_TMP_FILE_WARNING=false
-    networks:
-      - splunk
     depends_on: 
       - deployer
 
@@ -69,8 +57,6 @@ services:
       - search0_var:/opt/splunk/var
     hostname: search-0
     environment:
-     # - SPLUNK_HOME=/opt/splunk/
-     # - DEFAULTS_URL=http://splunk-defaults/default.yml
       - SPLUNK_START_ARGS="--accept-license"
       - SPLUNK_PASSWORD=Password01
       - SPLUNK_ROLE=splunk_search_head
@@ -82,10 +68,7 @@ services:
       - SPLUNK_SHC_SECRET=mypass4splunk
       - SPLUNK_IDXC_SECRET=mypass4splunk
       - SPLUNK_LAUNCH_CONF=OPTIMISTIC_ABOUT_FILE_LOCKING=1
-      - DEBUG=true
       - ANSIBLE_INSECURE_TMP_FILE_WARNING=false
-    networks:
-      - splunk
     depends_on: 
       - deployer
 
@@ -99,8 +82,6 @@ services:
       - search1_var:/opt/splunk/var
     hostname: search-1
     environment:
-    # - SPLUNK_HOME=/opt/splunk/
-     # - DEFAULTS_URL=http://splunk-defaults/default.yml
       - SPLUNK_START_ARGS="--accept-license"
       - SPLUNK_PASSWORD=Password01
       - SPLUNK_ROLE=splunk_search_head
@@ -112,10 +93,7 @@ services:
       - SPLUNK_SHC_SECRET=mypass4splunk
       - SPLUNK_IDXC_SECRET=mypass4splunk
       - SPLUNK_LAUNCH_CONF=OPTIMISTIC_ABOUT_FILE_LOCKING=1
-      - DEBUG=true
       - ANSIBLE_INSECURE_TMP_FILE_WARNING=false
-    networks:
-      - splunk
     depends_on: 
       - deployer
 
@@ -128,8 +106,3 @@ volumes:
   search0_var:
   search1_etc:
   search1_var:
-
-
-networks:
-  splunk:
-    external: true
