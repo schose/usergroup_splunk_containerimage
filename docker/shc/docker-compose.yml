@@ -2,7 +2,7 @@ services:
   deployer:
     image: splunk/splunk:9.3.4
     ports:
-      - "8022:8000"
+      - "8222:8000"
       - "8122:8089"
     volumes:
       - deployer_etc:/opt/splunk/etc
@@ -21,11 +21,13 @@ services:
       - SPLUNK_IDXC_SECRET=mypass4splunk
       - SPLUNK_LAUNCH_CONF=OPTIMISTIC_ABOUT_FILE_LOCKING=1
       - ANSIBLE_INSECURE_TMP_FILE_WARNING=false
+    networks:
+      - splunk
 
   captain:
     image: splunk/splunk:9.3.4
     ports:
-      - "8023:8000"
+      - "8223:8000"
       - "8123:8089"
     volumes:
       - captain_etc:/opt/splunk/etc
@@ -44,13 +46,15 @@ services:
       - SPLUNK_IDXC_SECRET=mypass4splunk
       - SPLUNK_LAUNCH_CONF=OPTIMISTIC_ABOUT_FILE_LOCKING=1
       - ANSIBLE_INSECURE_TMP_FILE_WARNING=false
+    networks:
+      - splunk
     depends_on: 
       - deployer
 
   search-0:
     image: splunk/splunk:9.3.4
     ports:
-      - "8024:8000"
+      - "8224:8000"
       - "8124:8089"
     volumes:
       - search0_etc:/opt/splunk/etc
@@ -69,13 +73,15 @@ services:
       - SPLUNK_IDXC_SECRET=mypass4splunk
       - SPLUNK_LAUNCH_CONF=OPTIMISTIC_ABOUT_FILE_LOCKING=1
       - ANSIBLE_INSECURE_TMP_FILE_WARNING=false
+    networks:
+      - splunk
     depends_on: 
       - deployer
 
   search-1:
     image: splunk/splunk:9.3.4
     ports:
-      - "8025:8000"
+      - "8225:8000"
       - "8125:8089"
     volumes:
       - search1_etc:/opt/splunk/etc
@@ -94,6 +100,8 @@ services:
       - SPLUNK_IDXC_SECRET=mypass4splunk
       - SPLUNK_LAUNCH_CONF=OPTIMISTIC_ABOUT_FILE_LOCKING=1
       - ANSIBLE_INSECURE_TMP_FILE_WARNING=false
+    networks:
+      - splunk
     depends_on: 
       - deployer
 
@@ -106,3 +114,7 @@ volumes:
   search0_var:
   search1_etc:
   search1_var:
+
+networks:
+  splunk:
+    external: true
