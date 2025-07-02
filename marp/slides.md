@@ -141,7 +141,7 @@ splunk/splunk:9.3.4
   - SPLUNK_SECRET=ABCDEFG..
   - JAVA_VERSION=openjdk:11
   - JAVA_DOWNLOAD_URL=https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_linux-x64_bin.tar.gz
-  - SPLUNKBASE_USERNAME=myuser SPLUNKBASE_PASSWORD=mypassword
+  - SPLUNKBASE_USERNAME=myuser SPLUNKBASE_PASSWORD=
   - SPLUNK_APPS_URL=https://github.com/schose/fixedissues/releases/download/v0.9.1/fixedissues_v091.tgz,https://splunkbase.splunk.com/app/2686/release/3.18.2/download
   - SPLUNK_LICENSE_URI= #URI or local file path
   
